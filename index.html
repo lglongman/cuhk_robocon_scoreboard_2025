@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <!-- <link rel="icon" href="favicon.ico" type="x-icon"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Robocon 2025 Scoreboard</title>
+                
+        <link rel="stylesheet" href="stylesheet/style.css">
+        <!-- <link rel="stylesheet" href="stylesheet/effects.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />         -->
+    </head>   
+    
+    <!-- <script src="script/script.js"></script>
+    <script src="script/effects.js"></script>
+    <script src="script/control.js"></script> -->
+    
+    <body>
+        
+        <div class=" flex-container wrapper">
+            <!-- TOP -->
+            <div class="wrapper" id="top"><div class="container">
+                <div id="timerBox">
+                    <!-- <audio id="audio0" preload="auto"><source src="assets/audio/short_beep.mp3"></audio>
+                    <audio id="audio1" preload="audo"><source src="assets/audio/long_beep.mp3"></audio> -->
+                    <span class="text" id="timerTitle">SET-UP TIME</span>
+                    <span class="num" id="timerTime">READY</span>
+                    <span class="num" id="timerSmallTime">10</span>
+                </div>
+                <div id="timerButtonBox">
+                    <div>
+                        <button class="text timerBtn" id="startBtn">Start</button>
+                        <button class="text timerBtn" id="addTimeBtn">+10s</button>
+                    </div>
+                    <div>
+                        <button class="text timerBtn" id="switchBtn">Set-up</button>
+                        <button class="text timerBtn" id="resetBtn">Reset</button>
+                    </div>
+                </div>
+            </div></div>
+
+            <!-- BOTTOM -->
+            <!-- <div id="bottom">
+                <div class="team">
+                    <div class="wrapper scoreBox" id="redScore">
+                        <span class="num">0</span>
+                        <span class="title text">Red Team</span>
+                    </div>
+
+                    <div class="wrapper buttonBox"><div class="container">
+                        <button class="num button">2Pt</button>
+                        <button class="num button">3Pt</button>
+                        <button class="num button">7Pt</button>
+
+                    </div></div>
+                </div>
+                
+                <div class="team">
+                    <div class="wrapper scoreBox" id="blueScore">
+                        <span class="num">0</span>
+                        <span class="title text">Blue Team</span>
+                    </div>
+
+                    <div class="wrapper buttonBox"><div class="container">
+                        <button class="num button">2Pt</button>
+                        <button class="num button">3Pt</button>
+                        <button class="num button">7Pt</button>
+
+                    </div></div>
+                </div>
+            </div> -->
+        </div>
+
+        <div id="footer">
+            <a class="text" href="https://github.com/lglongman/greatdiabetes" target="_blank" rel="noopener noreferrer">How To Use</a>
+            <span class="text">|</span>
+            <a class="text" href="https://docs.google.com/document/d/17cUGacw1SD96NldEvHeTc-Pq81tK6sQJ/edit?usp=sharing&ouid=117658634229997112009&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">Rulebook</a>
+            <span class="text">|</span>
+            <label>
+                <input type="checkbox" id="keyboardEnable" checked>
+                <span class="text">Keyboard</span>
+            </label>
+            <span class="text">|</span>
+            <label>
+                <input type="checkbox" id="controllerEnable" checked>
+                <span class="text" id="controllerLbl">Controller (Disconnected)</span>
+            </label>
+            <span class="text">|</span>
+            <label>
+                <input type="checkbox" id="loseEnable">
+                <span class="text">Billy</span>
+            </label>
+        </div>
+    </body>
+</html>
