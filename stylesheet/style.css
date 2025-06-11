@@ -114,7 +114,7 @@ button {
 }
 
 #timerTitle {
-    background-color: yellow;
+    /* background-color: yellow; */
     font-size: 1.5rem;
     width: 100%;
     text-align: center;
@@ -123,7 +123,7 @@ button {
     left: 0; */
 }
 #timerTime {
-    background-color: yellow;
+    /* background-color: yellow; */
     font-size: 6rem;
     width: 100%;
     text-align: center;
@@ -132,14 +132,14 @@ button {
     left: 0; */
 }
 #timerSmallTime {
-    background-color: yellow;
+    /* background-color: yellow; */
     font-size: 3rem;
     text-align: center;
 }
 
 /*?TOP-BUTTONS */
 #timerButtonBox {
-    background-color: green;
+    /* background-color: green; */
     height: auto;
     width: 100%;
     min-width: 22rem;
@@ -188,7 +188,7 @@ button {
 }
 
 .scoreBox {
-    background-color: gold;
+    /* background-color: gold; */
     flex-grow: 1;
 
     display: flex;
@@ -278,7 +278,7 @@ button {
         font-size: 4rem;
     }
     #timerTitle {
-        font-size: 1rem;
+        font-size: 1.25rem;
     }
     #timerSmallTime {
         font-size: 2rem;
