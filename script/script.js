@@ -59,17 +59,21 @@ function switchTimerMode() {
     if (gameMode == SETUP) {
         txt = "Game";
         countDown = true;
+        finishReady = true;
     }
     else if (gameMode == GAME) {
         txt = "Final";
         countDown = false;
+        finishReady = false;
     }
     else if (gameMode == FINAL) {
         txt = "Set-Up";
         countDown = false;
+        finishReady = false;
     }
+
+    console.log(finishReady);
     
-    finishReady = false;
 
     switchBtn.textContent = txt;
     addTimeBtn.disabled = true;

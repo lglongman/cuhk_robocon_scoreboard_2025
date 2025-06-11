@@ -35,7 +35,6 @@ function controllerLoop() {
             conIO[i] = gamepad.buttons[i].pressed;
             // output.textContent += "Button " + i + ": " + conIO[i] + "\n";
         }
-        // console.log(conIOToggle[UP]);
         getToggle(conIO.length);
 
         if (controllerEnable.checked) {

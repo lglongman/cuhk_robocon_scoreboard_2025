@@ -1,6 +1,5 @@
 body {
-    background-color: #FFFFFF;
-    /* background-color: #121212; */
+    background-color: #DDDDDD;
     overflow: hidden;
     padding: 0;
     transition: background-color 1.5s ease;
@@ -332,4 +331,10 @@ button {
 #footer .white input[type="checkbox"] {
     color: transparent;
     background-color: white;
+}
+
+#advTime {
+    width: 2rem;
+    background-color: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(0, 0, 0, 1);
 }
