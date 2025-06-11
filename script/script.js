@@ -14,8 +14,8 @@ let nextBtn = null;
 var gameMode = SETUP;
 var gameStatus = GAME;
 var countDown = true;
-var totalTime = [5, 61, 62];
-var roundTime = [5, 10];
+var totalTime = [60, 120, 160];
+var roundTime = [10, 20];
 let timer = null;
 var startTime = 0, roundStartTime = 0;
 var elapsedTime = 0, roundElapsedTime = 0;
@@ -43,15 +43,15 @@ function switchTimerMode() {
 
     var txt;
     if (gameMode == SETUP) {
-        txt = "Set-Up";
+        txt = "Game";
         countDown = true;
     }
     else if (gameMode == GAME) {
-        txt = "Game";
+        txt = "Final";
         countDown = false;
     }
     else if (gameMode == FINAL) {
-        txt = "Final";
+        txt = "Set-Up";
         countDown = false;
     }
 
@@ -64,8 +64,7 @@ function switchTimerMode() {
 
 
 function handleTimer() {
-    // addTimeBtn.disabled = false;
-    // nextBtn.disabled = false;
+    timerTime.classList.toggle("blink", false);
 
     // start/ continue timer
     if (!isRunning) {
@@ -73,10 +72,10 @@ function handleTimer() {
         startBtn.textContent = "Pause";
         addTimeBtn.disabled = true;
         nextBtn.disabled = true;
-        if (gameMode == GAME && gameStatus == RESET) {
+        if (gameMode != SETUP && gameStatus == RESET) {
             nextBtn.textContent = "Next Round";
         }
-        else if (gameMode == GAME && gameStatus == GAME) {
+        else if (gameMode != SETUP && gameStatus == GAME) {
             nextBtn.textContent = "10s Reset";
         }
         switchBtn.disabled = true;
@@ -146,7 +145,7 @@ function updateTimer() {
     // }
     
     // last 10s timer
-    if (timerTimeDisplay <= 10 && timerTimeDisplay > 0) {
+    if (totalTime[gameMode] - elapsedTime / 1000 <= 3) {
         timerTime.style.color = "red";
         // if (timerTimeDisplay != lastTimerTime) {
         //     audio[SHORT_BEEP].play();
@@ -173,10 +172,13 @@ function updateTimer() {
         stopTimer();
         startTime = 0;
         elapsedTime = 0;
+        roundStartTime = 0;
+        roundElapsedTime = 0;
         
         switchBtn.disabled = false;
         startBtn.textContent = "Restart";
         timerTime.classList.toggle("blink", true);
+        timerSmallTime.textContent = 0;
         
         // audio[LONG_BEEP].play();
         
@@ -203,9 +205,9 @@ function resetTimer() {
     
     startBtn.textContent = "Start";
     var txt;
-    if (gameMode == SETUP) txt = "Set-Up Time";
-    else if (gameMode == GAME) txt = "Game";
-    else if (gameMode == FINAL) txt = "Final";
+    if (gameMode == SETUP) txt = "Set-Up Time (60s)";
+    else if (gameMode == GAME) txt = "Game (120s)";
+    else if (gameMode == FINAL) txt = "Final (160s)";
     timerTitle.textContent = txt;
     showTimerTime(totalTime[gameMode])
 }
@@ -251,4 +253,21 @@ function startNextRound() {
     
     console.log("next");
     handleTimer();
+}
+
+function addRoundTime() {
+    addTimeBtn.disabled = true;
+    if (gameMode != SETUP && gameStatus != RESET) {
+        console.log("add");
+
+        roundElapsedTime -= 10000;
+        if (roundElapsedTime < 0) {
+            roundElapsedTime = 0;
+        }
+        elapsedTime = Math.floor(elapsedTime / 1000) * 1000;
+
+        roundTimerTimeDisplay = roundTime[gameStatus] - Math.floor(roundElapsedTime / 1000);
+        if (roundTimerTimeDisplay < 0) roundTimerTimeDisplay = 0;
+        timerSmallTime.textContent = roundTimerTimeDisplay;
+    }
 }
