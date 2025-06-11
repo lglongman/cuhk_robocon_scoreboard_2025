@@ -1,6 +1,7 @@
 // constants
 const RESET = 0, SETUP = 0, GAME = 1, FINAL = 2;
 const RED = 0, BLUE = 1;
+const SHORT_BEEP = 0, LONG_BEEP = 1;
 
 // elements
 let timerTitle = null;
@@ -11,6 +12,7 @@ let addTimeBtn = null;
 let switchBtn = null;
 let nextBtn = null;
 let teamScoreLbl = [null, null];
+let audio = [null, null];
 
 //var
 var gameMode = SETUP;
@@ -39,14 +41,15 @@ function init() {
     addTimeBtn = document.getElementById("addTimeBtn");
     nextBtn = document.getElementById("nextBtn");
     switchBtn = document.getElementById("switchBtn");
-
     teamScoreLbl[RED] = document.getElementById("redScore");
     teamScoreLbl[BLUE] = document.getElementById("blueScore");
+
+    audio[SHORT_BEEP] = document.getElementById("audio0");
+    audio[LONG_BEEP] = document.getElementById("audio1");
 }
 
 /*------TIMER------*/
 function switchTimerMode() {
-    // console.log("switch");
     gameMode += 1;
     if (gameMode > FINAL) gameMode = SETUP;
     gameStatus = GAME;
@@ -78,6 +81,7 @@ function switchTimerMode() {
 
 
 function handleTimer() {
+    timerTime.style.color = "black";
     timerTime.classList.toggle("blink", false);
 
     // start/ continue timer
@@ -125,7 +129,6 @@ function runTimer() {
 }
 
 function stopTimer() {
-    console.log("stopped");
     isRunning = false;
     clearInterval(timer);
     if (gameStatus == GAME) elapsedTime = Date.now() - startTime;
@@ -141,7 +144,7 @@ function updateTimer() {
     if (finishReady) {
         if (gameStatus == GAME) elapsedTime = currentTime - startTime;
         if (gameMode != SETUP) roundElapsedTime = currentTime - roundStartTime;
-        console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
+        // console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
         
         //timer display
         if (countDown) {
@@ -154,6 +157,7 @@ function updateTimer() {
         }
         if (gameMode != SETUP && elapsedTime / 1000 < 1) {
             timerTime.textContent = "GO";
+            audio[LONG_BEEP].play();
         }
         else {
             showTimerTime(timerTimeDisplay);
@@ -166,16 +170,16 @@ function updateTimer() {
             timerSmallTime.textContent = roundTimerTimeDisplay;
         }
         
-        // if (timerTimeDisplay == 12 && timerTimeDisplay != lastTimerTime) {
-        //     loadAudio(SHORT_BEEP);
-        // }
+        if (totalTime[gameMode] / 1000 - timerTimeDisplay == 12 && timerTimeDisplay != lastTimerTime) {
+            loadAudio(SHORT_BEEP);
+        }
         
         // last 10s timer
         if (totalTime[gameMode] - elapsedTime / 1000 <= 3) {
             timerTime.style.color = "red";
-            // if (timerTimeDisplay != lastTimerTime) {
-            //     audio[SHORT_BEEP].play();
-            // }
+            if (timerTimeDisplay != lastTimerTime) {
+                audio[SHORT_BEEP].play();
+            }
         }
         else {
             timerTime.style.color = "black";
@@ -207,10 +211,8 @@ function updateTimer() {
             timerTime.classList.toggle("blink", true);
             timerSmallTime.textContent = 0;
             
-            // audio[LONG_BEEP].play();
+            audio[LONG_BEEP].play();
         }
-
-        lastTimerTime = timerTimeDisplay;
     }
 
     else {
@@ -234,10 +236,14 @@ function updateTimer() {
             startBtn.disabled = false;
             finishReady = true;
         }
-
-
         timerTime.textContent = timerTimeDisplay;
+
+        if (timerTimeDisplay <= 3 && timerTimeDisplay != lastTimerTime) {
+            audio[SHORT_BEEP].play();
+        }
     }
+
+    lastTimerTime = timerTimeDisplay;
 }
 
 function resetTimer() {
@@ -279,16 +285,12 @@ function startNextRound() {
     elapsedTime = Math.floor(elapsedTime / 1000) * 1000;
         
     gameStatus = gameStatus == RESET? GAME : RESET;
-    
-    console.log("next");
     handleTimer();
 }
 
 function addRoundTime() {
     addTimeBtn.disabled = true;
     if (gameMode != SETUP && gameStatus != RESET) {
-        console.log("add");
-
         roundElapsedTime -= 10000;
         if (roundElapsedTime < 0) {
             roundElapsedTime = 0;
