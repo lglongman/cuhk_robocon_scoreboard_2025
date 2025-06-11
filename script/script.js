@@ -16,13 +16,15 @@ let teamScoreLbl = [null, null];
 var gameMode = SETUP;
 var gameStatus = GAME;
 var countDown = true;
-var totalTime = [60, 120, 160];
+var totalTime = [60, 12, 16];
 var roundTime = [10, 20];
 let timer = null;
-var startTime = 0, roundStartTime = 0;
-var elapsedTime = 0, roundElapsedTime = 0;
+let readyTimer = null;
+var startTime = 0, roundStartTime = 0, readyStartTime = 0;
+var elapsedTime = 0, roundElapsedTime = 0, readyElapsedTime = 0;
 var lastTimerTime = 0;
 var isRunning = false;
+var finishReady = true;
 
 var score = [0, 0];
 
@@ -62,6 +64,8 @@ function switchTimerMode() {
         txt = "Set-Up";
         countDown = false;
     }
+    
+    finishReady = false;
 
     switchBtn.textContent = txt;
     addTimeBtn.disabled = true;
@@ -75,10 +79,12 @@ function switchTimerMode() {
 
 function handleTimer() {
     timerTime.classList.toggle("blink", false);
-    timerSmallTime.style.color = "rgb(0, 0, 0, 1)";
 
     // start/ continue timer
     if (!isRunning) {
+        if (gameMode != SETUP && !finishReady) {
+            startBtn.disabled = true;
+        }
         runTimer();
         startBtn.textContent = "Pause";
         addTimeBtn.disabled = true;
@@ -109,11 +115,13 @@ function runTimer() {
     isRunning = true;
     startTime = Date.now() - elapsedTime;
     roundStartTime = Date.now() - roundElapsedTime;
+    if (!finishReady) {
+        readyStartTime = Date.now() - readyElapsedTime;
+    }
 
     console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
 
     timer = setInterval(updateTimer, 5);
-    // timerTime.classList.toggle("blink", false);
 }
 
 function stopTimer() {
@@ -128,73 +136,108 @@ function stopTimer() {
 
 function updateTimer() {
     currentTime = Date.now();
-    if (gameStatus == GAME) elapsedTime = currentTime - startTime;
-    if (gameMode != SETUP) roundElapsedTime = currentTime - roundStartTime;
-    console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
-    
-    //timer display
+
     var timerTimeDisplay, roundTimerTimeDisplay;
-    if (countDown) {
-        timerTimeDisplay = totalTime[gameMode] - Math.floor(elapsedTime / 1000);
-        if (timerTimeDisplay < 0) timerTimeDisplay = 0;
-    }
-    else {
-        timerTimeDisplay = Math.floor(elapsedTime / 1000);
-        if (timerTimeDisplay > totalTime[gameMode]) timerTimeDisplay = totalTime[gameMode];
-    }
-    showTimerTime(timerTimeDisplay);
-    
-    // small timer display
-    if (gameMode != SETUP) {
-        roundTimerTimeDisplay = roundTime[gameStatus] - Math.floor(roundElapsedTime / 1000);
-        if (roundTimerTimeDisplay < 0) roundTimerTimeDisplay = 0;
-        timerSmallTime.textContent = roundTimerTimeDisplay;
-    }
-    
-    // if (timerTimeDisplay == 12 && timerTimeDisplay != lastTimerTime) {
-    //     loadAudio(SHORT_BEEP);
-    // }
-    
-    // last 10s timer
-    if (totalTime[gameMode] - elapsedTime / 1000 <= 3) {
-        timerTime.style.color = "red";
-        // if (timerTimeDisplay != lastTimerTime) {
-        //     audio[SHORT_BEEP].play();
+    if (finishReady) {
+        if (gameStatus == GAME) elapsedTime = currentTime - startTime;
+        if (gameMode != SETUP) roundElapsedTime = currentTime - roundStartTime;
+        console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
+        
+        //timer display
+        if (countDown) {
+            timerTimeDisplay = totalTime[gameMode] - Math.floor(elapsedTime / 1000);
+            if (timerTimeDisplay < 0) timerTimeDisplay = 0;
+        }
+        else {
+            timerTimeDisplay = Math.floor(elapsedTime / 1000);
+            if (timerTimeDisplay > totalTime[gameMode]) timerTimeDisplay = totalTime[gameMode];
+        }
+        if (gameMode != SETUP && elapsedTime / 1000 < 1) {
+            timerTime.textContent = "GO";
+        }
+        else {
+            showTimerTime(timerTimeDisplay);
+        }
+        
+        // small timer display
+        if (gameMode != SETUP) {
+            roundTimerTimeDisplay = roundTime[gameStatus] - Math.floor(roundElapsedTime / 1000);
+            if (roundTimerTimeDisplay < 0) roundTimerTimeDisplay = 0;
+            timerSmallTime.textContent = roundTimerTimeDisplay;
+        }
+        
+        // if (timerTimeDisplay == 12 && timerTimeDisplay != lastTimerTime) {
+        //     loadAudio(SHORT_BEEP);
         // }
+        
+        // last 10s timer
+        if (totalTime[gameMode] - elapsedTime / 1000 <= 3) {
+            timerTime.style.color = "red";
+            // if (timerTimeDisplay != lastTimerTime) {
+            //     audio[SHORT_BEEP].play();
+            // }
+        }
+        else {
+            timerTime.style.color = "black";
+        }
+        
+        // Round end
+        if ((roundElapsedTime / 1000) >= roundTime[gameStatus]) {
+            stopTimer();
+            roundStartTime = 0;
+            roundElapsedTime = 0;
+
+            startBtn.disabled = true;
+            nextBtn.disabled = false;
+            switchBtn.disabled = false;
+            startBtn.textContent = "Next";
+        }
+        
+        // Time end
+        if ((elapsedTime / 1000) >= totalTime[gameMode]) {
+            finishReady = false;
+            stopTimer();
+            startTime = 0;
+            elapsedTime = 0;
+            roundStartTime = 0;
+            roundElapsedTime = 0;
+            
+            switchBtn.disabled = false;
+            startBtn.textContent = "Restart";
+            timerTime.classList.toggle("blink", true);
+            timerSmallTime.textContent = 0;
+            
+            // audio[LONG_BEEP].play();
+        }
+
+        lastTimerTime = timerTimeDisplay;
     }
+
     else {
-        timerTime.style.color = "black";
-    }
-    
-    // Round end
-    if ((roundElapsedTime / 1000) >= roundTime[gameStatus]) {
-        stopTimer();
-        roundStartTime = 0;
-        roundElapsedTime = 0;
+        readyElapsedTime = currentTime - readyStartTime;
+        if (readyElapsedTime / 1000 < 1) {
+            timerTimeDisplay = "READY";
+        }
+        else if (readyElapsedTime / 1000 < 6) {
+            timerTimeDisplay = 6 - Math.floor(readyElapsedTime / 1000);
+        }
+        // start
+        else {
+            timerSmallTime.style.color = "rgb(0, 0, 0, 1)";
+            readyElapsedTime = 0;
+            elapsedTime = 0;
+            roundElapsedTime = 0;
 
-        startBtn.disabled = true;
-        nextBtn.disabled = false;
-        switchBtn.disabled = false;
-        startBtn.textContent = "Next";
-    }
-    
-    // Time end
-    if ((elapsedTime / 1000) >= totalTime[gameMode]) {
-        stopTimer();
-        startTime = 0;
-        elapsedTime = 0;
-        roundStartTime = 0;
-        roundElapsedTime = 0;
-        
-        switchBtn.disabled = false;
-        startBtn.textContent = "Restart";
-        timerTime.classList.toggle("blink", true);
-        timerSmallTime.textContent = 0;
-        
-        // audio[LONG_BEEP].play();
-    }
+            readyStartTime = 0;
+            startTime = Date.now() - elapsedTime;
+            roundStartTime = Date.now() - roundElapsedTime;
+            startBtn.disabled = false;
+            finishReady = true;
+        }
 
-    lastTimerTime = timerTimeDisplay;
+
+        timerTime.textContent = timerTimeDisplay;
+    }
 }
 
 function resetTimer() {
@@ -234,28 +277,7 @@ function startNextRound() {
     roundStartTime = 0;
     roundElapsedTime = 0;
     elapsedTime = Math.floor(elapsedTime / 1000) * 1000;
-    
-    //! // proceed to 10s reset time
-    //! if (gameStatus == GAME) {
-    //!     gameStatus = RESET;
-    //!     runTimer();
-    //!     startBtn.textContent = "Pause";
-    //!     addTimeBtn.disabled = true;
-    //!     switchBtn.disabled = true;
-    //! }
-    //! // skip 10s reset time
-    //! else if (gameStatus == RESET) {
-    //!     gameStatus = GAME;
-    //!     if (isRunning) {
-    //!         stopTimer();
-    //!     }
-    //!     runTimer();
-    //!     startBtn.textContent = "Pause";
-    //!     addTimeBtn.disabled = true;
-    //!     nextBtn.disabled = true;
-    //!     switchBtn.disabled = true;
-    //! }
-    
+        
     gameStatus = gameStatus == RESET? GAME : RESET;
     
     console.log("next");

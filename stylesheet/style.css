@@ -134,7 +134,7 @@ button {
     left: 0; */
 }
 #timerSmallTime {
-    /* background-color: yellow; */
+    color: rgba(0, 0, 0, 0);
     font-size: 3rem;
     text-align: center;
 }
