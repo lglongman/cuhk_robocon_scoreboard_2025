@@ -114,7 +114,7 @@ button {
 }
 
 #timerTitle {
-    /* background-color: yellow; */
+    background-color: yellow;
     font-size: 1.5rem;
     width: 100%;
     text-align: center;
@@ -123,7 +123,7 @@ button {
     left: 0; */
 }
 #timerTime {
-    /* background-color: yellow; */
+    background-color: yellow;
     font-size: 6rem;
     width: 100%;
     text-align: center;
@@ -132,14 +132,14 @@ button {
     left: 0; */
 }
 #timerSmallTime {
-    /* background-color: yellow; */
+    background-color: yellow;
     font-size: 3rem;
     text-align: center;
 }
 
 /*?TOP-BUTTONS */
 #timerButtonBox {
-    /* background-color: green; */
+    background-color: green;
     height: auto;
     width: 100%;
     min-width: 22rem;
@@ -149,15 +149,13 @@ button {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    /* flex-direction: column; */
-    /* flex-wrap: wrap; */
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 0.7rem;
 }
 
 #timerButtonBox div {
     flex-grow: 1;
-    height: 3rem;
-    min-width: 15rem;
     
     display: flex;
     flex-direction: row;
@@ -165,7 +163,8 @@ button {
 }
 
 #timerButtonBox button {
-    width: 100%;
+    width: 5rem;
+    height: 2rem;
 }
 
 /* BOTTOM=========================================================================== */
@@ -219,9 +218,8 @@ button {
 }
 
 .score {
-    font-size: 12rem;
-    color: white;
-    
+    font-size: 9rem;
+    color: white; 
 }
 
 .buttonBox {
@@ -233,18 +231,24 @@ button {
 }
 
 
+/* screen layout */
 @media (orientation: portrait) {
+    #timerButtonBox {
+        margin-top: 0.5rem;
+    }
+    #timerButtonBox {
+        flex-direction: column;
+    }
     #bottom {    
         flex-direction: column;
         gap: 2rem;
     }
-
     .team {
         flex-direction: row;
         gap: 1rem;
     }
     .score {
-        font-size: 9rem;
+        font-size: 6rem;
     }
     .buttonBox {
         width: 10rem;
@@ -253,6 +257,40 @@ button {
         gap: 1rem;
     }
 }
+
+@media (max-height: 780px) and (orientation: landscape) {
+    #timerTime {
+        font-size: 5rem;
+    }
+    #timerTitle {
+        font-size: 1.5rem;
+    }
+    #timerSmallTime {
+        font-size: 2rem;
+    }
+    .score {
+        font-size: 8rem;
+    }
+}
+
+@media (max-height: 800px) and (orientation: portrait) {
+    #timerTime {
+        font-size: 4rem;
+    }
+    #timerTitle {
+        font-size: 1rem;
+    }
+    #timerSmallTime {
+        font-size: 2rem;
+    }
+    .score {
+        font-size: 3rem;
+    }
+}
+
+
+
+
 
 
 
