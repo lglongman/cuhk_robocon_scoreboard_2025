@@ -1,5 +1,6 @@
 // constants
 const RESET = 0, SETUP = 0, GAME = 1, FINAL = 2;
+const RED = 0, BLUE = 1;
 
 // elements
 let timerTitle = null;
@@ -9,6 +10,7 @@ let startBtn = null;
 let addTimeBtn = null;
 let switchBtn = null;
 let nextBtn = null;
+let teamScoreLbl = [null, null];
 
 //var
 var gameMode = SETUP;
@@ -22,8 +24,11 @@ var elapsedTime = 0, roundElapsedTime = 0;
 var lastTimerTime = 0;
 var isRunning = false;
 
+var score = [0, 0];
+
 function init() {
     console.log("init");
+    document.addEventListener('contextmenu', event => event.preventDefault());
 
     timerTitle = document.getElementById("timerTitle");
     timerTime = document.getElementById("timerTime");
@@ -32,6 +37,9 @@ function init() {
     addTimeBtn = document.getElementById("addTimeBtn");
     nextBtn = document.getElementById("nextBtn");
     switchBtn = document.getElementById("switchBtn");
+
+    teamScoreLbl[RED] = document.getElementById("redScore");
+    teamScoreLbl[BLUE] = document.getElementById("blueScore");
 }
 
 /*------TIMER------*/
@@ -60,11 +68,14 @@ function switchTimerMode() {
     nextBtn.disabled = true;
     
     resetTimer();
+    updateScore(RED, -100);
+    updateScore(BLUE, -100);
 }
 
 
 function handleTimer() {
     timerTime.classList.toggle("blink", false);
+    timerSmallTime.style.color = "rgb(0, 0, 0, 1)";
 
     // start/ continue timer
     if (!isRunning) {
@@ -181,11 +192,6 @@ function updateTimer() {
         timerSmallTime.textContent = 0;
         
         // audio[LONG_BEEP].play();
-        
-        //! if (gameMode == GAME) {
-        //!     displayScore();
-        //!     checkProgress();
-        //! }
     }
 
     lastTimerTime = timerTimeDisplay;
@@ -202,6 +208,7 @@ function resetTimer() {
     switchBtn.disabled = false;
     timerTime.style.color = "black";
     timerTime.classList.toggle("blink", false);
+    timerSmallTime.style.color = "rgba(0, 0, 0, 0)";
     
     startBtn.textContent = "Start";
     var txt;
@@ -270,4 +277,13 @@ function addRoundTime() {
         if (roundTimerTimeDisplay < 0) roundTimerTimeDisplay = 0;
         timerSmallTime.textContent = roundTimerTimeDisplay;
     }
+}
+
+
+//? SCOREBOARD==================================================================================================
+function updateScore(team, val) {
+    score[team] += val;
+    if (score[team] > 99) score[team] = 99;
+    else if (score[team] < 0) score[team] = 0;
+    teamScoreLbl[team].textContent = score[team];
 }

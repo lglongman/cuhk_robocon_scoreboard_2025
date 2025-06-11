@@ -23,9 +23,9 @@
                 <div id="timerBox">
                     <!-- <audio id="audio0" preload="auto"><source src="assets/audio/short_beep.mp3"></audio>
                     <audio id="audio1" preload="audo"><source src="assets/audio/long_beep.mp3"></audio> -->
-                    <span class="text" id="timerTitle">SET-UP TIME</span>
+                    <span class="text" id="timerTitle">SET-UP TIME (60s)</span>
                     <span class="num" id="timerTime">READY</span>
-                    <span class="num" id="timerSmallTime">10</span>
+                    <span class="num" id="timerSmallTime">20</span>
                 </div>
                 <div id="timerButtonBox">
                     <div>
@@ -46,12 +46,12 @@
                <div class="team">
                     <div class="wrapper scoreBox red">
                         <span class="text title">Red Team</span>
-                        <span class="num score" id="blueScore">00</span>
+                        <span class="num score" id="redScore">0</span>
                     </div>
                     <div class="buttonBox">
-                        <button class="text">2 Pt</button>
-                        <button class="text">3 Pt</button>
-                        <button class="text">7 Pt</button>
+                        <button class="text" onclick="updateScore(0, 2)" oncontextmenu="updateScore(0, -2)">2 Pt</button>
+                        <button class="text" onclick="updateScore(0, 3)" oncontextmenu="updateScore(0, -3)">3 Pt</button>
+                        <button class="text" onclick="updateScore(0, 7)" oncontextmenu="updateScore(0, -7)">7 Pt</button>
                     </div>
                </div>
                
@@ -59,12 +59,12 @@
                <div class="team">
                     <div class="wrapper scoreBox blue">
                         <span class="text title">Blue Team</span>
-                        <span class="num score" id="blueScore">00</span>
+                        <span class="num score" id="blueScore">0</span>
                     </div>
                     <div class="buttonBox">
-                        <button class="text">2 Pt</button>
-                        <button class="text">3 Pt</button>
-                        <button class="text">7 Pt</button>
+                        <button class="text" onclick="updateScore(1, 2)" oncontextmenu="updateScore(1, -2)">2 Pt</button>
+                        <button class="text" onclick="updateScore(1, 3)" oncontextmenu="updateScore(1, -3)">3 Pt</button>
+                        <button class="text" onclick="updateScore(1, 7)" oncontextmenu="updateScore(1, -7)">7 Pt</button>
                     </div>
                </div>
                
@@ -74,7 +74,7 @@
         <div id="footer">
             <a class="text" href="https://github.com/lglongman/greatdiabetes" target="_blank" rel="noopener noreferrer">How To Use</a>
             <span class="text">|</span>
-            <a class="text" href="https://docs.google.com/document/d/17cUGacw1SD96NldEvHeTc-Pq81tK6sQJ/edit?usp=sharing&ouid=117658634229997112009&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">Rulebook</a>
+            <a class="text" href="https://aburobocon2025.mnb.mn/uploads/file/ABU_ROBOCON_2025_Rulebook_20241121.pdf" target="_blank" rel="noopener noreferrer">Rulebook</a>
             <span class="text">|</span>
             <label>
                 <input type="checkbox" id="keyboardEnable" checked>
