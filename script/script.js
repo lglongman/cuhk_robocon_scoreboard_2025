@@ -18,7 +18,7 @@ let audio = [null, null];
 var gameMode = SETUP;
 var gameStatus = GAME;
 var countDown = true;
-var totalTime = [60, 12, 16];
+var totalTime = [60, 120, 160];
 var roundTime = [10, 20];
 let timer = null;
 let readyTimer = null;
@@ -27,6 +27,7 @@ var elapsedTime = 0, roundElapsedTime = 0, readyElapsedTime = 0;
 var lastTimerTime = 0;
 var isRunning = false;
 var finishReady = true;
+var advTime = 0;
 
 var score = [0, 0];
 
@@ -174,6 +175,12 @@ function updateTimer() {
             loadAudio(SHORT_BEEP);
         }
         
+        //advance beep
+        advTime = document.getElementById("advTime").value;
+        if (Math.floor(elapsedTime / 1000) == advTime && timerTimeDisplay != lastTimerTime && gameMode != SETUP) {
+            audio[LONG_BEEP].play();
+        }
+
         // last 10s timer
         if (totalTime[gameMode] - elapsedTime / 1000 <= 3) {
             timerTime.style.color = "red";
