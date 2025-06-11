@@ -19,10 +19,12 @@ var countDown = true;
 var totalTime = [60, 120, 160];
 var roundTime = [10, 20];
 let timer = null;
-var startTime = 0, roundStartTime = 0;
-var elapsedTime = 0, roundElapsedTime = 0;
+let readyTimer = null;
+var startTime = 0, roundStartTime = 0, readyStartTime = 0;
+var elapsedTime = 0, roundElapsedTime = 0, readyElapsedTime = 0;
 var lastTimerTime = 0;
 var isRunning = false;
+//! var gameStarted = false;
 
 var score = [0, 0];
 
@@ -75,11 +77,15 @@ function switchTimerMode() {
 
 function handleTimer() {
     timerTime.classList.toggle("blink", false);
-    timerSmallTime.style.color = "rgb(0, 0, 0, 1)";
 
     // start/ continue timer
     if (!isRunning) {
-        runTimer();
+        if (gameMode != SETUP && elapsedTime == 0) {
+            startReadyTimer();
+        }
+        else {
+            runTimer();
+        }
         startBtn.textContent = "Pause";
         addTimeBtn.disabled = true;
         nextBtn.disabled = true;
@@ -105,6 +111,12 @@ function handleTimer() {
     }
 }
 
+function startReadyTimer() {
+    startBtn.disabled = true;
+    readyStartTime = Date.now() - readyElapsedTime;
+    readyTimer = setInterval(updateReadyTimer, 5);
+}
+
 function runTimer() {
     isRunning = true;
     startTime = Date.now() - elapsedTime;
@@ -126,6 +138,37 @@ function stopTimer() {
     console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
 }
 
+function updateReadyTimer() {
+    currentTime = Date.now();
+    readyElapsedTime = currentTime - readyStartTime;
+    console.log("READY | elapsedTime: ", readyElapsedTime / 1000);
+
+    var timerTimeDisplay;
+    if (readyElapsedTime / 1000 < 1) {
+        timerTimeDisplay = "READY";
+    }
+    else if (readyElapsedTime / 1000 < 6) {
+        timerTimeDisplay = 6 - Math.floor(readyElapsedTime / 1000);
+    }
+    // start
+    else {
+        timerSmallTime.style.color = "rgb(0, 0, 0, 1)";
+        
+        clearInterval(readyTimer);
+        readyStartTime = 0;
+        readyElapsedTime = 0;
+        startTime = 0;
+        elapsedTime = 0;
+        roundStartTime = 0;
+        roundElapsedTime = 0;
+        startBtn.disabled = false;
+        runTimer();
+    }
+
+
+    timerTime.textContent = timerTimeDisplay;
+}
+
 function updateTimer() {
     currentTime = Date.now();
     if (gameStatus == GAME) elapsedTime = currentTime - startTime;
@@ -142,7 +185,12 @@ function updateTimer() {
         timerTimeDisplay = Math.floor(elapsedTime / 1000);
         if (timerTimeDisplay > totalTime[gameMode]) timerTimeDisplay = totalTime[gameMode];
     }
-    showTimerTime(timerTimeDisplay);
+    if (gameMode != SETUP && elapsedTime / 1000 < 1) {
+        timerTime.textContent = "GO";
+    }
+    else {
+        showTimerTime(timerTimeDisplay);
+    }
     
     // small timer display
     if (gameMode != SETUP) {
