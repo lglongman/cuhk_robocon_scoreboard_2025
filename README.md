@@ -7,7 +7,7 @@ A timer program for Robocon 2025.
 - **Tab**: Switch timer mode 
 - **Space**: Start/ Pause timer
 - **Enter**: Go to 10s reset time/ Go to next round
-- **+**: Add 10s to shot clock
+- **+**: Add 10s to the shot clock
 
 ## Scoreboard Buttons
 Red Team:
@@ -54,9 +54,13 @@ Blue Team:
 - **R2 + CROSS**: Undo a 3-point shot
 - **R2 + CIRCLE**: Undo a 7-point shot (Dunkshot)
 
+## Mouse
+- **Left-click** on the score buttons to add score
+- **Right-click** on the score buttons to minus score
+
 # Notes
-- A 5s ready countdown will occur before the gameclock starts in Game/ Final mode
+- A **5s Ready Countdown** will occur before the gameclock starts in *Game/ Final Mode*
 - A long beep sound will be played when 
-    - 8s advance time is over (change the time in the textbox at the bottom)
-    - Shot clock ends (20s)
-    - Game clock ends (120s/ 160s)
+    - **Advance time** is over (change the time in the textbox at the bottom)
+    - **Shot clock** ends (20s)
+    - **Game clock** ends (120s/ 160s)
