@@ -18,7 +18,8 @@ let audio = [null, null];
 var gameMode = SETUP;
 var gameStatus = GAME;
 var countDown = true;
-var totalTime = [60, 120, 160];
+// var totalTime = [60, 120, 160];
+var totalTime = [10, 12, 16];
 var roundTime = [10, 20];
 let timer = null;
 let readyTimer = null;
@@ -70,10 +71,7 @@ function switchTimerMode() {
         txt = "Set-Up";
         countDown = false;
         finishReady = false;
-    }
-
-    console.log(finishReady);
-    
+    }  
 
     switchBtn.textContent = txt;
     addTimeBtn.disabled = true;
@@ -128,7 +126,11 @@ function runTimer() {
         readyStartTime = Date.now() - readyElapsedTime;
     }
 
-    console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
+    console.log("Start Timer\n",
+                "mode: ", (gameMode == SETUP? "SETUP" : (gameMode == GAME? "GAME" : "FINAL")),
+                " | status: ", (gameStatus == GAME? "GAME\n" : "RESET\n"), 
+                "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000, "\n",
+                "finishReady: ", finishReady);
 
     timer = setInterval(updateTimer, 5);
 }
@@ -139,8 +141,11 @@ function stopTimer() {
     if (gameStatus == GAME) elapsedTime = Date.now() - startTime;
     roundElapsedTime = Date.now() - roundStartTime;
 
-    console.log((gameStatus == GAME? "GAME | " : "SETUP |"), "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000);
-}
+    console.log("Stop Timer\n",
+        "mode: ", (gameMode == SETUP? "SETUP" : (gameMode == GAME? "GAME" : "FINAL")),
+        " | status: ", (gameStatus == GAME? "GAME\n" : "RESET\n"), 
+        "elapsedTime: ", elapsedTime / 1000, "roundTime: ", roundElapsedTime / 1000, "\n",
+        "finishReady: ", finishReady);}
 
 function updateTimer() {
     currentTime = Date.now();
@@ -175,7 +180,7 @@ function updateTimer() {
             timerSmallTime.textContent = roundTimerTimeDisplay;
         }
         
-        if (totalTime[gameMode] / 1000 - timerTimeDisplay == 12 && timerTimeDisplay != lastTimerTime) {
+        if (totalTime[gameMode] / 1000 - timerTimeDisplay == 5 && timerTimeDisplay != lastTimerTime) {
             loadAudio(SHORT_BEEP);
         }
         
@@ -190,27 +195,20 @@ function updateTimer() {
             timerTime.style.color = "red";
             if (timerTimeDisplay != lastTimerTime) {
                 audio[SHORT_BEEP].play();
+                console.log("short beep");
             }
         }
         else {
             timerTime.style.color = "black";
         }
         
-        // Round end
-        if ((roundElapsedTime / 1000) >= roundTime[gameStatus]) {
-            stopTimer();
-            roundStartTime = 0;
-            roundElapsedTime = 0;
-
-            startBtn.disabled = true;
-            nextBtn.disabled = false;
-            switchBtn.disabled = false;
-            startBtn.textContent = "Next";
-        }
-        
-        // Time end
+        // Game time end
         if ((elapsedTime / 1000) >= totalTime[gameMode]) {
-            finishReady = false;
+            console.log("Game end");
+            
+            if (gameMode != SETUP) {
+                finishReady = false;
+            }
             stopTimer();
             startTime = 0;
             elapsedTime = 0;
@@ -220,19 +218,36 @@ function updateTimer() {
             switchBtn.disabled = false;
             startBtn.textContent = "Restart";
             timerTime.classList.toggle("blink", true);
-            timerSmallTime.textContent = 0;
-            
+                        
             audio[LONG_BEEP].play();
         }
+        // Round end
+        else if ((roundElapsedTime / 1000) >= roundTime[gameStatus]) {
+            console.log("Round end");
+
+            stopTimer();
+            roundStartTime = 0;
+            roundElapsedTime = 0;
+
+            startBtn.disabled = true;
+            nextBtn.disabled = false;
+            switchBtn.disabled = false;
+            startBtn.textContent = "Next";
+
+            audio[LONG_BEEP].play();
+        }
+        
     }
 
     else {
         readyElapsedTime = currentTime - readyStartTime;
         if (readyElapsedTime / 1000 < 1) {
             timerTimeDisplay = "READY";
+            timerSmallTime.style.color = "rgb(0, 0, 0, 0)";
         }
         else if (readyElapsedTime / 1000 < 6) {
             timerTimeDisplay = 6 - Math.floor(readyElapsedTime / 1000);
+            timerSmallTime.style.color = "rgb(0, 0, 0, 0)";
         }
         // start
         else {
@@ -251,6 +266,7 @@ function updateTimer() {
 
         if (timerTimeDisplay <= 3 && timerTimeDisplay != lastTimerTime) {
             audio[SHORT_BEEP].play();
+            console.log("short beep");
         }
     }
 
