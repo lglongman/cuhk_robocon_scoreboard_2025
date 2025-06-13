@@ -18,8 +18,8 @@ let audio = [null, null];
 var gameMode = SETUP;
 var gameStatus = GAME;
 var countDown = true;
-// var totalTime = [60, 120, 160];
-var totalTime = [10, 12, 16];
+var totalTime = [60, 120, 160];
+// var totalTime = [10, 12, 16];
 var roundTime = [10, 20];
 let timer = null;
 let readyTimer = null;
@@ -218,7 +218,7 @@ function updateTimer() {
             switchBtn.disabled = false;
             startBtn.textContent = "Restart";
             timerTime.classList.toggle("blink", true);
-                        
+
             audio[LONG_BEEP].play();
         }
         // Round end
