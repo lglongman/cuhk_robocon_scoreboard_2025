@@ -213,7 +213,7 @@ function updateTimer() {
             timerTime.classList.toggle("blink", true);
         }
         // Round end
-        else if ((roundElapsedTime / 1000) >= roundTime[gameStatus]) {           
+        else if ((roundElapsedTime / 1000) >= roundTime[gameStatus] && gameMode != SETUP) {           
             if (gameStatus == GAME) {
                 audio[LONG_BEEP].play();
                 console.log("long beep: round end");
