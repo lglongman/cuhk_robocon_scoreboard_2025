@@ -19,12 +19,12 @@ Red Team:
 - **Shift + C**: Undo a 7-point shot (Dunkshot)
 
 Blue Team:
-- **,**: Add a 2-point shot
-- **.**: Add a 3-point shot
-- **/**: Add a 7-point shot (Dunkshot)
-- **Shift + ,**: Undo a 2-point shot
-- **Shift + .**: Undo a 2-point shot
-- **Shift + /**: Undo a 2-point shot (DUnkshot)
+- **,** : Add a 2-point shot
+- **.** : Add a 3-point shot
+- **/** : Add a 7-point shot (Dunkshot)
+- **Shift + ,** : Undo a 2-point shot
+- **Shift + .** : Undo a 2-point shot
+- **Shift + /** : Undo a 2-point shot (DUnkshot)
 
 
 # How To Use (DS4/DS5 Controller)
@@ -54,6 +54,9 @@ Blue Team:
 - **R2 + CROSS**: Undo a 3-point shot
 - **R2 + CIRCLE**: Undo a 7-point shot (Dunkshot)
 
-# Others
-A long beep sound will be played when 8s is over for advance
-Change the time in the textbox at the bottom
+# Notes
+- A 5s ready countdown will occur before the gameclock starts in Game/ Final mode
+- A long beep sound will be played when 
+    - 8s advance time is over (change the time in the textbox at the bottom)
+    - Shot clock ends (20s)
+    - Game clock ends (120s/ 160s)
