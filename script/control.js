@@ -58,7 +58,7 @@ function getToggle(num) {
 }
 
 window.addEventListener("gamepadconnected", (event)=>{
-    alert("DS5 Connected");
+    // alert("DS5 Connected");
     console.log("DS5 Connected");
     const controllerLbl = document.getElementById("controllerLbl");
     controllerLbl.textContent = "Controller (Connected)";
@@ -67,6 +67,7 @@ window.addEventListener("gamepadconnected", (event)=>{
 window.addEventListener("gamepaddisconnected", (event)=>{
     alert("DS5 Disonnected");
     console.log("DS5 Disonnected");
+    const controllerLbl = document.getElementById("controllerLbl");
     controllerLbl.textContent = "Controller (Disconnected)";
     cancelAnimationFrame(controllerLoop);
 });
