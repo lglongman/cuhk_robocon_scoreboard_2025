@@ -74,6 +74,7 @@ function switchTimerMode() {
     }  
 
     switchBtn.textContent = txt;
+    startBtn.disabled = false;
     addTimeBtn.disabled = true;
     nextBtn.disabled = true;
     
